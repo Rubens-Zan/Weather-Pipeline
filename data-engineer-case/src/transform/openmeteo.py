@@ -126,7 +126,7 @@ def transform():
                 continue
             log.info(f"Pivoted raw data to {df_new_wide.shape[0]} rows (WIDE format).")
 
-            # 3c. Load existing historical data
+            # 4. Load existing historical data from structured_output_dir
             df_historical: Optional[pd.DataFrame] = None
             if structured_path.exists():
                 try:
@@ -139,7 +139,7 @@ def transform():
             else:
                 log.info(f"No historical file found at {structured_path}. A new file will be created.")
 
-            # 3d. Merge new and historical data
+            # 5. Merge new data with historical data (handle duplicates and schema differences)
             df_final: pd.DataFrame
             if df_historical is not None:
                 df_final = merge_data(df_new_wide, df_historical)
@@ -150,7 +150,7 @@ def transform():
             
             log.info(f"Merged data. Final row count for {structured_path}: {len(df_final)}")
 
-            # 3e. Write monthly parquet file
+            # 6. Write monthly parquet files to structured_output_dir
             structured_path.parent.mkdir(parents=True, exist_ok=True)
             df_final.to_parquet(structured_path, index=False, engine="pyarrow")
             
@@ -159,10 +159,8 @@ def transform():
         except Exception as e:
             log.error(f"Failed to process monthly file {structured_path}: {e}")
             # Continue to the next monthly file
-        
         log.info("--- Transform Stage Complete ---")
     
-    # 4. Load existing historical data from structured_output_dir
-    # 5. Merge new data with historical data (handle duplicates and schema differences)
-    # 6. Write monthly parquet files to structured_output_dir
+    
+    
     # raise NotImplementedError
