@@ -16,7 +16,8 @@ API_ENDPOINT = "https://archive-api.open-meteo.com/v1/archive"
 # Location coordinates as specified in README.md
 LOCATION_COORDINATES: Dict[str, Dict[str, float]] = {
     "amsterdam": {"latitude": 52.37, "longitude": 4.89},
-    "london": {"latitude": 51.51, "longitude": -0.13}
+    "london": {"latitude": 51.51, "longitude": -0.13},
+    "paris": {"latitude": 48.8566, "longitude": 2.3522 }
 }
 
 # --- Setup Logging ---

@@ -3,7 +3,7 @@ import json
 import logging
 from pathlib import Path
 from typing import List, Dict, Any, Optional
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ValidationError, field_validator
 import pandas as pd
 import requests
 import requests.sessions # For type hinting
@@ -16,9 +16,29 @@ class DateConfig(BaseModel):
     end_date: str
     time_increment: str
 
+#
 class Location(BaseModel):
     name: str
     sensors: List[str]
+
+    @field_validator('name')
+    @classmethod
+    def validate_name_is_empty(cls, v: str) -> str: 
+        """_summary_
+
+        Args:
+            v (str): Location string received by API 
+
+        Raises:
+            ValueError: 
+            FileNotFoundError: _description_
+
+        Returns:
+            str: _description_
+        """
+        if not v.strip(): 
+            raise ValueError('ERRO: Nome da localização é vazio ')
+        return v 
 
 class LocalStorage(BaseModel):
     raw_output_dir: str
@@ -36,6 +56,8 @@ TASKS_FILE = Path("tasks.json")
 # --- Setup Logging ---
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 log = logging.getLogger(__name__)
+
+
 
 def parse_iso8601_duration(duration_str: str) -> timedelta:
     """

@@ -24,6 +24,16 @@
         "surface_pressure",
         "cloud_cover"
       ]
+    },
+    {
+      "name": "paris",
+      "sensors": [
+        "temperature_2m",
+        "relative_humidity_2m",
+        "wind_speed_10m",
+        "surface_pressure",
+        "cloud_cover"
+      ]
     }
   ],
   "local_storage": {
